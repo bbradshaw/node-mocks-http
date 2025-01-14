@@ -1482,14 +1482,16 @@ describe('mockResponse', () => {
             });
 
             it('should return true, when Content-Length equals data size', () => {
-                response.send('data');
+                response = mockResponse.createResponse();
                 response.header('Content-Length', '4');
+                response.send('data');
                 expect(response._isDataLengthValid()).to.equal(true);
             });
 
             it('should return false, when Content-Length does not equal data size', () => {
-                response.send('data');
+                response = mockResponse.createResponse();
                 response.header('Content-Length', '5');
+                response.send('data');
                 expect(response._isDataLengthValid()).to.equal(false);
             });
         });
