@@ -876,7 +876,12 @@ describe('mockResponse', () => {
                 // further updates to headers shouldn't really be reflected in mock headers
                 // since these would be transmitted as part of the body (probably breaking chunked encoding)
                 // in real life.
-                response.writeHead(500, { 'x-header': 'llama party' });
+                try {
+                    response.writeHead(500, { 'x-header': 'llama party' });
+                } catch (err) {
+                    expect(err.code).to.equal('ERR_HTTP_HEADERS_SENT');
+                }
+
                 // Should still see same as before
                 expect(response.getHeaders()).to.deep.equal(headers);
             });
